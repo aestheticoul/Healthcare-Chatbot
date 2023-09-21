@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="/static/index.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <style>
+      body {
+        background-image: url(https://www.revechat.com/wp-content/uploads/2021/11/chatbots-for-healthcare-1.png);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+        background-size: 100% 100%;
+      }
+      </style>
+    <h1>Healthcare Chatbot Build using rasa, TEAM JAY</h1>
+    <div>
+      <div id="chatbox">
+        <p class="botText">
+          <span>Please try typing full sentences as I am still learning!</span>
+        </p>
+        <p class="botText">
+          <span>I am a your Health assistant, developed by Team Jay.</span>
+        </p>
+        <p class="botText">
+          <span
+            >Hi There! how can i help you. What Symptoms you are facing</span
+          >
+        </p>
+      </div>
+      <div id="userInput">
+        <input id="textInput" type="text" name="msg" placeholder="Message" />
+        <input id="buttonInput" type="submit" value="Send" />
+      </div>
+      <script>
+        function getBotResponse() {
+          var rawText = $("#textInput").val();
+          var userHtml = '<p class="userText"><span>' + rawText + "</span></p>";
+          $("#textInput").val("");
+          $("#chatbox").append(userHtml);
+          document
+            .getElementById("userInput")
+            .scrollIntoView({ block: "start", behavior: "smooth" });
+          $.get("/get", { msg: rawText }).done(function (data) {
+            var botHtml = '<p class="botText"><span>' + data + "</span></p>";
+            $("#chatbox").append(botHtml);
+            document
+              .getElementById("userInput")
+              .scrollIntoView({ block: "start", behavior: "smooth" });
+          });
+        }
+        $("#textInput").keypress(function (e) {
+          if (e.which == 13) {
+            getBotResponse();
+          }
+        });
+        $("#buttonInput").click(function () {
+          getBotResponse();
+        });
+      </script>
+    </div>
+  </body>
+</html>
